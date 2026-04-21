@@ -286,17 +286,7 @@ These include:
 - `remove: true` to mark the action as unrecoverable.
 - `xp: [value]` to add global XP to that half of the card.
 
-These modifiers and/or icons go before the `actions` block, since they apply to the entire half of the card, like so:
-[source]
-----
-top:
-  lost: true 
-  xp: 2 
-  duration: round
-  actions:
-    - ''
-----
-
+These modifiers and/or icons go before the `actions` block, since they apply to the entire half of the card. For more detail on these properties, see <<other-common-card-properties, Other Common Card Properties>>.
 
 [[basic-actions]]
 === link:#nav-menu[Basic Actions]
@@ -430,11 +420,17 @@ Using multiple elements separated by '/' will generate an “or” condition.
 | Adds a mandatory box with a list of specified elements. (Note: As a modifier, do not prefix with a '-')
 | `infuse: [earth/wild]`
 | [!image:icons/earth.svg[width=20px]image:icons/wild.svg[width=20px]]
+
+| `infuseStyle:`
+| Lets you customize the default position and styling of the infuse action. `infuseStyle:` should be placed directly below `infuse:`, while keeping the same parent as `infuse:`.
+| `infuseStyle: +
+&nbsp;&nbsp;marginTop: 5px`
+| The infuse action will be pushed down by 5px.
 |===
 
 *Note:* The square brackets in the consume and infuse examples are required in the syntax.
 
-*Note:* For infusion, this will only work at the first indentation level. This means that either `bottom:` or `top:` should be its direct parent.
+*Note:* For infusion, this will only work at the first indentation level. This means that either `bottom:` or `top:` should be its direct parent. `infuseStyle:` should sit directly below `infuse:`, but it should share the same parent block.
 
 [[custom-actions]]
 === link:#nav-menu[Custom Actions]
@@ -499,9 +495,9 @@ Sub Blocks are the blocks that house the extra properties of an action. These ar
 ----
 - attack: 3
   sub:
-    target: 2
-    range: 3
-    pierce: 1
+    - target: 2
+    - range: 3
+    - pierce: 1
 ----
 
 In this example, the "sub" block contains the "target", "range", and "pierce" modifiers. These are all indented 2 spaces from the "attack" command, indicating that they are all part of that action.
@@ -510,6 +506,7 @@ Alongside all existing conditions, the available attributes you can put in a sub
 
 - target
 - range
+- customn
 
 [[optional-blocks]]
 === link:#nav-menu[Optional Blocks]
@@ -524,7 +521,7 @@ Optional blocks represent abilities, or augments to abilities that come with a c
   - custom: '+2 %attack%'
 ----
 
-The above will render an attack 3 ability with an optional block that consumes earth and adds +2 attack. Sometimes, an optional block may be used to represent an extra ability, rather than an augment to an ability. An example of this would be:
+The above will render an attack 3 ability with an optional block that consumes earth and adds +2 attack. Sometimes, an optional block may be used to represent an extra ability, rather than an augment to an ability (without being attached to it), in this case we use the modifier "noLine". An example of this would be:
 
 [source]
 ----
@@ -555,6 +552,8 @@ Mandatory blocks are used to represent abilities that *must* be performed if tha
 
 In this example, we have an attack 3 ability with a mandatory block that means the player has to curse themselves.
 
+An extension of the mandatory block is the <<mode-blocks, Mode block>>.
+
 [[tokens]]
 === link:#nav-menu[Tokens]
 
@@ -565,7 +564,7 @@ The tokens block creates token slots. Each number in the provided array represen
 | Syntax | Description | Example | Result
 
 | `- tokens: [0,1,0,1]`
-| Creates token slots with XP values as defined in the array.
+| Creates token slots with XP values where there is '1' in the array.
 | `- tokens: [0,1,0,1]`
 | Renders token slots accordingly.
 |===
@@ -594,9 +593,10 @@ The area of effect block is used to create a hex pattern. This takes the followi
 [source]
 ----
 - hex: et_st
+  h: invert(0.28) sepia(1) saturate(9.5) hue-rotate(340deg) brightness(0.82) contrast(1.1)
 ----
 
-In this example, we have an area of effect block that creates a hex pattern of two hexes in front of the player. Each letter in the string represents a hex, and the order of the letters determines the order of the hexes. The letters are as follows:
+In this example, we have an area of effect block that creates a hex pattern of two hexes in front of the player and another orange hex below them. Each letter in the string represents a hex, and the order of the letters determines the order of the hexes. The letters are as follows:
 
 - e: no hex rendered (used for positioning other hexes)
 - t: target
@@ -605,6 +605,8 @@ In this example, we have an area of effect block that creates a hex pattern of t
 - b: blank
 - x: enhancement dot hex
 - _: start new row
+
+You may also use some letters for custom colored hexes, which you may color using css styling as used in the example. These letters include 'd', 'h', 'f' and 'c'.
 
 [[summons]]
 === link:#nav-menu[Summons]
@@ -621,11 +623,14 @@ Summons are a special type of action that can be created using the "summon" bloc
       url: "https://example.com/image.png"
       size: 100%
       position: '0px 0px'
+    special:
+      - shield: 1
+    width: 100px
 ----
 
 *Note:* This specific block's properties require a double indentation (4 spaces).
 
-In this example, we have a custom action that creates a summon called "Example Summon". This summon has 5 health, 2 move, 3 attack, and no range. The summon also has an image, which is set to a URL, and has various properties to position the image in the image box.
+In this example, we have a custom action that creates a summon called "Example Summon". This summon has 5 health, 2 move, 3 attack, and no range. The summon also has an image, which is set to a URL, and has various properties to position the image in the image box. It also has 1 shield defined in the special box (optional). Finally, the width of the special area is set to 100 pixels.
 
 Here are all the properties that can be set for a summon:
 
@@ -769,6 +774,11 @@ The mode block has a couple of special properties that can be set. These are:
 | The background color of the border between the two boxes. This will usually be in rgb form as shown in the example.
 | `borderBg: 'rgb(0,0,255,50%)'`
 | The border between the two boxes will be blue with 50% opacity.
+
+| `dividerIndent: [value]`
+| Moves the divider between the icon segment and the content segment by [value].
+| `dividerIndent: 27pt`
+| The divider between the icon segment and the content segment will be moved by 27pt.
 |===
 
 
@@ -898,6 +908,12 @@ There are many more style modifiers that can be applied to blocks. Here are the 
 | `gap: 5px`
 | The gap between the items in the block will be set to 5px.
 
+| `iconStyle`
+| Applies style modifiers specifically to icons within the block.
+| `iconStyle: +
+&nbsp;&nbsp;fontSize: 28pt`
+| Icons in the block will use a font size of 28pt.
+
 |===
 
 [[position]]
@@ -910,7 +926,7 @@ To change a block's position, orientation, or size, use the following modifiers:
 | Modifier | Description | Example | Result
 
 | `position`
-| Sets positioning mode: `relative` (based on surrounding elements) or `absolute` (based on the parent element).
+| Sets positioning mode: `relative` (based on surrounding elements), `absolute` (based on the parent element), or `above` (renders the block above the actual card border).
 | `position: absolute`
 | The block will be positioned absolutely.
 
@@ -961,7 +977,7 @@ top:
   duration: persistent
 ----
 
-In this example, we have a group block that contains two actions, an attack and a AoE hex pattern. Group blocks default to a flexDirection of row, so the two actions will be placed next to each other. The group block also has a marginTop of -40px, which will pull the group up into the top area of the card. The paddingTop of 20px will add some space between the top of the group and the top of the card, allowing the darker background to extend seamlessly to the edge of the card. Finally, you can see the Named Ability block at the top, which is used to create the iconography in the corner of the banner group we've just created.
+In this example, we have a group block that contains two actions, an attack and a AoE hex pattern. Group blocks default to a `flexDirection: row` (but it can be also set to 'column'), so the two actions will be placed next to each other. The group block also has a marginTop of -40px, which will pull the group up into the top area of the card. The paddingTop of 20px will add some space between the top of the group and the top of the card, allowing the darker background to extend seamlessly to the edge of the card. Finally, you can see the Named Ability block at the top, which is used to create the iconography in the corner of the banner group we've just created.
 
 The principles shown here can be applied to many different scenarios, and using a combination of everything shown so far, there is a lot of freedom available to you to create the card you want. Remember, you are able to access the example syntax class to see some examples of how to use these blocks, and how they can be combined to create the desired effect. Otherwise, experiment a little with the blocks, and see what you can come up with!
 
