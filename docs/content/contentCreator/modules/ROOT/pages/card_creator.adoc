@@ -41,6 +41,7 @@ An in-depth guide for using the Card Creator tool to design custom Frosthaven cl
 *** <<common-style-modifiers, Common Style Modifiers>>
 *** <<more-style-modifiers, More Style Modifiers>>
 *** <<position, Position>>
+*** <<other-controls, Other Controls>>
 *** <<advanced-styling, Advanced Styling>>
 * <<tts-mod, Tabletop Simulator Mod>>
 ** <<tts-assets, TTS Assets>>
@@ -71,7 +72,7 @@ Before you begin creating your cards, it's recommended to set up some base info,
 The base info section is where you can define all the aspects of your class that don't involve the cards themselves, such as the info presented on the class mat.
 
 Here is a brief overview of the properties you can define:
-{set:cellbgcolor:rgb(48, 48, 48)}
+{set:cellbgcolor:rgb(120,120,120)}
 [cols="1,1", options="header"]
 |===
 | Property | Description
@@ -166,6 +167,9 @@ Before delving into the specifics of each, you might notice that there is also a
 ===== link:#nav-menu[Base Colors]
 
 In the Base Colors sub-menu, you have access to several core card styling options, and for most projects, you will not need much more than that. You can adjust the color of the background texture that overlays the background image, the colors of the top banner where the card name appears, and the side banners. You can also change the color of the outer frame, the lines that separate objects, and the backgrounds of boxes such as optional text blocks and element consumptions. If you are using a Frosthaven-based template, you can also modify the color of the runes on the sides of the card.
+
+When using the color picker, pressing the label at the bottom where it says `RGB` will cycle through different color definitions: `RGB` -> `HSL` -> `HEX` -> `RGB`. This can be useful depending on which color format you prefer to work with.
+
 Most of these visual elements also have an `Img` button that allows you to upload a custom design for that element, replacing the default one. You can always return to the default asset by pressing the `Default` button.
 
 [[detail-colors]]
@@ -200,8 +204,11 @@ The syntax of the Card Creator uses simple commands to render icons and values. 
 
 `- command: [value]`
 
-Modifiers can be added to fine-tune placement, styling, or functionality. Sections below break down each command group. 
-*NOTE:* For many examples on card structure and syntax, including all the examples shown in this documentation, feel free to browse the "Example Syntax" class present in the tool. The classes are ordered Alphabetically, so the "Example Syntax" class will be found around the letter E.
+Modifiers can be added to fine-tune placement, styling, or functionality. Sections below break down each command group.
+
+*NOTE:* For many examples on card structure and syntax, including all the examples shown in this documentation, feel free to browse the "Example Syntax" class present in the tool. The classes are ordered alphabetically, so the "Example Syntax" class will be found around the letter E.
+
+*Tip:* It can also be useful to look through other published classes to see how different creators structure cards, solve layout problems, and build their own visual style.
 
 [[tab-hierarchy]]
 === link:#nav-menu[Tab Hierarchy]
@@ -873,6 +880,11 @@ There are many more style modifiers that can be applied to blocks. Here are the 
 | `height: 10px`
 | The height of the block will be 10px.
 
+| `width`
+| Sets the width of the block. This can be any number, and will be set in pixels.
+| `width: 100px`
+| The width of the block will be 100px.
+
 | `display`
 | Sets the display type of the block. This can be set to anything that is valid in CSS, but in almost every case, you don't want to change this.
 | `display: flex`
@@ -946,10 +958,43 @@ To change a block's position, orientation, or size, use the following modifiers:
 | Doubles the size of the block.
 |===
 
+[[other-controls]]
+=== link:#nav-menu[Other Controls]
+
+Above the code editor, there are several controls that help you work with card code more efficiently.
+
+[cols="1,3", options="header"]
+|===
+| Control | Description
+
+| `Unwrap` / `Wrap`
+| Disables or enables line wrapping, which can help avoid side scrolling when working with longer lines.
+
+| `Hide #` / `Show #`
+| Hides or shows the line numbers in the editor.
+
+| `Fold`
+| Enables or disables folding for a parent block and all of its children.
+
+| `Search`
+| Lets you search for a keyword and optionally replace it.
+
+| `Light`
+| Changes the editor theme from dark to light.
+
+| `Drag: Off` / `Drag: On`
+| Disables or enables manual drag-and-drop positioning of elements on the card.
+
+| `Delete Card`
+| Deletes the current card.
+|===
+
 [[advanced-styling]]
 === link:#nav-menu[Advanced Styling]
 
 This section will be dedicated to more advanced styling, to achieve the desired look for your cards. This includes things like the ability to create a banner, or a group of actions that are all part of the same action.
+
+Inside text-based blocks such as `custom`, you can also use a few special formatting helpers. `%nbsp:X%` inserts multiple spaces, where `X` is the number of spaces to add, and `%lf%` inserts a line break. These can be useful when you need more precise control over formatting inside a text block.
 
 The main block we care about here is the "group" block. This block is used to group actions together, allowing horizontal stacking, or easy positioning of multiple actions at once. One of the easiest examples to show this off is the aforementioned banner. On official cards, there are sometimes a group of actions at the top of the card in a separate "banner" area. Here's an advanced example of how we can recreate something like that using the group block:
 
