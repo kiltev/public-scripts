@@ -22,6 +22,7 @@ An in-depth guide for using the Card Creator tool to design custom Frosthaven cl
 *** <<adding-cards, Adding Cards>>
 * <<syntax, Syntax>>
 ** <<tab-hierarchy, Tab Hierarchy>>
+** <<general-structure-overview, General Structure Overview>>
 ** <<basic-actions, Basic Actions>>
 ** <<conditions, Conditions>>
 ** <<elements, Elements>>
@@ -150,7 +151,7 @@ One thing to note about the following sections is that for some of the options (
 [[deck-properties]]
 ==== link:#nav-menu[Deck Properties]
 
-The "Deck Properties" section is where you can see, and set, various properties for the deck. This includes the name of the deck, a link to the icon of the class, and various links to different class tokens, allowing you to add custom images to cards (this is explained in more detail in the <<basic-actions, Basic Actions>>, and the <<custom-actions, Custom Actions>> section).
+The "Deck Properties" section is where you can see, and set, various properties for the deck. This includes the name of the deck, a link to the icon of the class, and various links to different class tokens, allowing you to add custom images to cards (this is explained in more detail in the <<basic-actions, Basic Actions>>, and the <<custom-actions, Custom Actions>> section). The custom class tokens can also be adjusted in scale, each having two separate scale properties, one for inline size and one for main action as will be explained in the <<syntax, Syntax>> section.
 
 [[card-style]]
 ==== link:#nav-menu[Card Style]
@@ -182,7 +183,7 @@ If you are using a Frosthaven-based template, you can also modify the color of t
 [[deck-stats]]
 ==== link:#nav-menu[Deck Stats]
 
-The "Deck Stats" section shows a quick overview of the elements that are present in the deck. This is useful for keeping track of how many infusions and consumptions are in the deck. This can help with balancing.
+The "Deck Stats" section shows a quick overview of the elements that are present in the deck. This is useful for keeping track of how many infusions and consumptions are in the deck. This section also displays the initiatives of all the cards in the deck. This can help with balancing.
 
 [[adding-cards]]
 ==== link:#nav-menu[Adding Cards]
@@ -199,7 +200,8 @@ The syntax of the Card Creator uses simple commands to render icons and values. 
 
 `- command: [value]`
 
-Modifiers can be added to fine-tune placement, styling, or functionality. Sections below break down each command group. For many examples on card structure, including all the examples shown in this documentation, feel free to browse the "Example Syntax" class present in the tool.
+Modifiers can be added to fine-tune placement, styling, or functionality. Sections below break down each command group. 
+*NOTE:* For many examples on card structure and syntax, including all the examples shown in this documentation, feel free to browse the "Example Syntax" class present in the tool. The classes are ordered Alphabetically, so the "Example Syntax" class will be found around the letter E.
 
 [[tab-hierarchy]]
 === link:#nav-menu[Tab Hierarchy]
@@ -237,6 +239,63 @@ In this example, we have utilized a "group" block to contain multiple actions. E
 A more detailed explanation of each block type is provided in the following sections.
 
 *Remember:* use 2 spaces per level of indentation to maintain the proper hierarchy.
+
+
+[[general-structure-overview]]
+=== link:#nav-menu[General Structure Overview]
+
+When you create and focus a new card, you will immediately be greeted with a basic structure like this:
+[source]
+----
+name: New Card
+initiative: 0
+level: 1
+top:
+  actions:
+    - ''
+bottom:
+  actions:
+    - ''
+----
+
+As you can see, there are already a few things you can control. Changing the name of the card, its level, or its initiative is as easy as modifying the value.
+There are also a few modifiers outside the main action block:
+
+- `number: X` sets manual card order in editor. `X` is card ID/position. Cards without `number` appear at end.
+- `style: X` applies alternate style ID from <<card-style, Card Style>>. Use values such as `0`, `1`, `2`, and so on.
+- `corner:` adds custom information and iconography to bottom-left corner of card.
+
+Finally, let us continue with the main block defined by:
+[source]
+----
+top:
+  actions:
+    - ''
+bottom:
+  actions:
+    - ''
+----
+
+Any action the card defines, as discussed in <<basic-actions, Basic Actions>>, goes into the `actions` segment. However, there are also several modifiers for a top or bottom action that go outside that block.
+
+These include:
+
+- `infuse: [elements...]` to add a mandatory infusion box at the top level of the action.
+- `duration: [value]` to add either a "round" or "persistent" duration icon.
+- `lost: true` to mark the action as lost.
+- `remove: true` to mark the action as unrecoverable.
+- `xp: [value]` to add global XP to that half of the card.
+
+These modifiers and/or icons go before the `actions` block, since they apply to the entire half of the card, like so:
+[source]
+----
+top:
+  lost: true 
+  xp: 2 
+  duration: round
+  actions:
+    - ''
+----
 
 
 [[basic-actions]]
