@@ -979,6 +979,9 @@ Above the code editor, there are several controls that help you work with card c
 | `Search`
 | Lets you search for a keyword and optionally replace it.
 
+| `Comment` (`Ctrl + /` / `Cmd + /`)
+| Add `#` at the start of a line to comment it out and disable its effect. You can also select lines (or part of a text block) and use `Ctrl + /` (`Cmd + /` on Mac) to toggle comments. Useful for notes or temporarily disabling content instead of deleting it.
+
 | `Light`
 | Changes the editor theme from dark to light.
 
@@ -992,15 +995,28 @@ Above the code editor, there are several controls that help you work with card c
 [[advanced-styling]]
 === link:#nav-menu[Advanced Styling]
 
-This section will be dedicated to more advanced styling, to achieve the desired look for your cards. This includes things like the ability to create a banner, or a group of actions that are all part of the same action.
+This section covers two advanced styling topics: special text styling inside text-based blocks, and layout techniques for banners and grouped actions.
 
-Inside text-based blocks such as `custom`, you can also use a few special formatting helpers. `%nbsp:X%` inserts multiple spaces, where `X` is the number of spaces to add, and `%lf%` inserts a line break. These can be useful when you need more precise control over formatting inside a text block.
+==== Special Text Styling
 
-The main block we care about here is the "group" block. This block is used to group actions together, allowing horizontal stacking, or easy positioning of multiple actions at once. One of the easiest examples to show this off is the aforementioned banner. On official cards, there are sometimes a group of actions at the top of the card in a separate "banner" area. Here's an advanced example of how we can recreate something like that using the group block:
+Inside text-based blocks such as `custom`, you can use a few special formatting helpers. `%nbsp:X%` inserts multiple spaces, where `X` is the number of spaces to add, and `%lf%` inserts a line break.
+
+In addition, within `- custom:` text blocks, you can also wrap parts of a line (or the full line) in a `%p_% <your text> %p%` block to apply CSS paragraph styles. On its own, this block does nothing, but when paired with style settings it can modify the selected text segment. Separate each CSS setting with `;`. For valid style properties, see Mozilla's CSS reference: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+
+Example:
+[source]
+----
+  - custom: 'This is a normal text followed by %p_font-weight:bold;font-size:20pt;color:#ff0000%a red bold text that is 20pt.%p%'
+----
+
+==== Banners and Object Grouping
+
+A banner is a styled area of the card, usually near the top, that visually groups related actions or information into a separate section. On official cards, this is often used to make a cluster of actions stand out from the rest of the card. The main block we use to create this kind of layout is the `group` block, which lets you place actions together for horizontal stacking or easier positioning. Here's an advanced example of how we can recreate a banner-like layout using the group block:
 
 [source]
 ----
 top:
+  duration: persistent
   namedAbility:
     name: Grenade
     padding: 10px 10px
@@ -1019,7 +1035,7 @@ top:
       marginTop: 10px
       sub:
         - self
-  duration: persistent
+ 
 ----
 
 In this example, we have a group block that contains two actions, an attack and a AoE hex pattern. Group blocks default to a `flexDirection: row` (but it can be also set to 'column'), so the two actions will be placed next to each other. The group block also has a marginTop of -40px, which will pull the group up into the top area of the card. The paddingTop of 20px will add some space between the top of the group and the top of the card, allowing the darker background to extend seamlessly to the edge of the card. Finally, you can see the Named Ability block at the top, which is used to create the iconography in the corner of the banner group we've just created.
